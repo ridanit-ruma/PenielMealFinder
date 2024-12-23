@@ -10,6 +10,8 @@ const PORT = 3000;
 
 let mealData = {};
 
+console.log(`[INFO] API KEY : ${process.env.KEY}`);
+
 const fetchMealData = async () => {
     let today = '20241223'
     try {
@@ -36,7 +38,7 @@ const fetchMealData = async () => {
         mealData = { date: today, cal, dish };
         console.log(`[INFO] Successfully updated meal data : ${today}`);
     } else {
-        console.error(`[ERROR] No meal data: ${data}`);
+        console.error(`[ERROR] No meal data: ${today}`);
         mealData = { error: "No meal data available for today" };
     }
     } catch (error) {
