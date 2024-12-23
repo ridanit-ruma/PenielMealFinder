@@ -8,7 +8,9 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-let mealData = {};
+let breakfastMealData = {};
+let lunchMealData = {};
+let dinnerMealData = {};
 
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
 
@@ -35,11 +37,12 @@ const fetchMealData = async () => {
     if (data.mealServiceDietInfo) {
         const cal = data.mealServiceDietInfo[1].row[0].CAL_INFO;
         const dish = (data.mealServiceDietInfo[1].row[0].DDISH_NM).split('<br/>');
-        mealData = { date: today, cal, dish };
+        const nutritionInfo = (data.mealServiceDietInfo[1].row[0].NTR_INFO).split('<br/>');
+        lunchMealData = { date: today, dish, cal, nutritionInfo };
         console.log(`[INFO] Successfully updated meal data : ${today}`);
     } else {
         console.error(`[ERROR] No meal data: ${today}`);
-        mealData = { error: "No meal data available for today" };
+        lunchMealData = { error: "No meal data available for today" };
     }
     } catch (error) {
         console.error(`[ERROR] Faild to get meal data: ${error.message}`);
@@ -52,8 +55,8 @@ job.start();
 
 fetchMealData();
 
-app.get('/meal', (req, res) => {
-    res.json(mealData);
+app.get('/meal/getLunchMealData', (req, res) => {
+    res.json(lunchMealData);
 });
 
 app.listen(PORT, () => {
