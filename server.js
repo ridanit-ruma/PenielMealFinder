@@ -15,6 +15,7 @@ let dinnerMealData = {};
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
 
 const fetchMealData = async (mealCode, today) => {
+    console.log(today)
     const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.KEY}&Type=json&ATPT_OFCDC_SC_CODE=C10&SD_SCHUL_CODE=7191199&MMEAL_SC_CODE=${mealCode}&MLSV_YMD=${today}`;
     
     try {
@@ -61,7 +62,7 @@ const updateMealData = async () => {
 const job = new cron.CronJob('0 0 * * *', updateMealData, null, true, 'Asia/Seoul');
 job.start();
 
-fetchMealData();
+updateMealData();
 
 app.get('/meal/getBreakfastMealData', (req, res) => {
     res.json(breakfastMealData);
