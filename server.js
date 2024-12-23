@@ -8,14 +8,13 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-let breakfastMealData = {};
-let lunchMealData = {};
-let dinnerMealData = {};
+let breakfastMealData = { message: "Updating meal data, please wait..." };
+let lunchMealData = { message: "Updating meal data, please wait..." };
+let dinnerMealData = { message: "Updating meal data, please wait..." };
 
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
 
 const fetchMealData = async (mealCode, today) => {
-    console.log(today)
     const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.KEY}&Type=json&ATPT_OFCDC_SC_CODE=C10&SD_SCHUL_CODE=7191199&MMEAL_SC_CODE=${mealCode}&MLSV_YMD=${today}`;
     
     try {
@@ -64,15 +63,15 @@ job.start();
 
 updateMealData();
 
-app.get('/meal/getBreakfastMealData', (req, res) => {
+app.get('/meal/getBreakfastMealData', async (req, res) => {
     res.json(breakfastMealData);
 });
 
-app.get('/meal/getLunchMealData', (req, res) => {
+app.get('/meal/getLunchMealData', async (req, res) => {
     res.json(lunchMealData);
 });
 
-app.get('/meal/getDinnerMealData', (req, res) => {
+app.get('/meal/getDinnerMealData', async (req, res) => {
     res.json(dinnerMealData);
 });
 
