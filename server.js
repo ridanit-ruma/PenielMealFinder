@@ -11,11 +11,13 @@ const PORT = 3000;
 let mealData = {};
 
 const fetchMealData = async () => {
-    const today = '20241223'
+    let today = '20241223'
     try {
-        const data = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia/Seoul').json()
+        const response = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia/Seoul')
+        const data = await response.json();
         if (data.dateTime) {
-            today = date.toISOString().split('T')[0].replace(/-/g, '')
+            const date = new Date(data.dateTime);
+            today = date.toISOString().slice(0, 10).replace(/-/g, '');
         } else {
             console.error(`[ERROR] Faild to load date : no data.datetime`);
         }
