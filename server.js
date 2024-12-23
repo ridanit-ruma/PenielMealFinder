@@ -58,7 +58,7 @@ const updateMealData = async () => {
     dinnerMealData = await fetchMealData('3', today);
 };
 
-const job = new cron.CronJob('0 0 * * *', updateMealData, null, true, 'Asia/Seoul');
+const job = new cron.CronJob('0 13 * * *', updateMealData, null, true, 'Asia/Seoul');
 job.start();
 
 updateMealData();
