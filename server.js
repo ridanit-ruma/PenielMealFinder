@@ -36,7 +36,7 @@ const fetchMealData = async () => {
         mealData = { date: today, cal, dish };
         console.log(`[INFO] Successfully updated meal data : ${today}`);
     } else {
-        console.error(`[ERROR] No meal data: ${data.mealServiceDietInfo}`);
+        console.error(`[ERROR] No meal data: ${data}`);
         mealData = { error: "No meal data available for today" };
     }
     } catch (error) {
