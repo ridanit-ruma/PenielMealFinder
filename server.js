@@ -14,7 +14,32 @@ let dinnerMealData = {};
 
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
 
-const fetchMealData = async () => {
+const fetchMealData = async (mealCode, today) => {
+    const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.KEY}&Type=json&ATPT_OFCDC_SC_CODE=C10&SD_SCHUL_CODE=7191199&MMEAL_SC_CODE=${mealCode}&MLSV_YMD=${today}`;
+    
+    try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (data.mealServiceDietInfo) {
+            const mealData = data.mealServiceDietInfo[1].row[0];
+            return {
+                date: today,
+                dish: mealData.DDISH_NM.split('<br/>'),
+                cal: mealData.CAL_INFO,
+                nutritionInfo: mealData.NTR_INFO.split('<br/>')
+            };
+        } else {
+            console.error(`[ERROR] No meal data: ${today}`);
+            return { error: "No meal data available for today" };
+        }
+    } catch (error) {
+        console.error(`[ERROR] Failed to get meal data: ${error.message}`);
+        return { error: "Failed to fetch meal data" };
+    }
+};
+
+const updateMealData = async () => {
     let today = '20241223'
     try {
         const response = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia/Seoul')
@@ -28,35 +53,26 @@ const fetchMealData = async () => {
     } catch (error) {
         console.error(`[ERROR] Faild to load date : ${error.message}`);
     }
-    const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.KEY}&Type=json&ATPT_OFCDC_SC_CODE=C10&SD_SCHUL_CODE=7191199&MMEAL_SC_CODE=2&MLSV_YMD=${today}`;
-
-    try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-
-    if (data.mealServiceDietInfo) {
-        const cal = data.mealServiceDietInfo[1].row[0].CAL_INFO;
-        const dish = (data.mealServiceDietInfo[1].row[0].DDISH_NM).split('<br/>');
-        const nutritionInfo = (data.mealServiceDietInfo[1].row[0].NTR_INFO).split('<br/>');
-        lunchMealData = { date: today, dish, cal, nutritionInfo };
-        console.log(`[INFO] Successfully updated meal data : ${today}`);
-    } else {
-        console.error(`[ERROR] No meal data: ${today}`);
-        lunchMealData = { error: "No meal data available for today" };
-    }
-    } catch (error) {
-        console.error(`[ERROR] Faild to get meal data: ${error.message}`);
-        mealData = { error: "Failed to fetch meal data" };
-    }
+    breakfastMealData = await fetchMealData('1', today);
+    lunchMealData = await fetchMealData('2', today);
+    dinnerMealData = await fetchMealData('3', today);
 };
 
-const job = new cron.CronJob('0 0 * * *', fetchMealData, null, true, 'Asia/Seoul');
+const job = new cron.CronJob('0 0 * * *', updateMealData, null, true, 'Asia/Seoul');
 job.start();
 
 fetchMealData();
 
+app.get('/meal/getBreakfastMealData', (req, res) => {
+    res.json(breakfastMealData);
+});
+
 app.get('/meal/getLunchMealData', (req, res) => {
     res.json(lunchMealData);
+});
+
+app.get('/meal/getDinnerMealData', (req, res) => {
+    res.json(dinnerMealData);
 });
 
 app.listen(PORT, () => {
