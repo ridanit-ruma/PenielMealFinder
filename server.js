@@ -8,9 +8,24 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-let breakfastMealData = { message: "Updating meal data, please wait..." };
-let lunchMealData = { message: "Updating meal data, please wait..." };
-let dinnerMealData = { message: "Updating meal data, please wait..." };
+let breakfastMealData = {
+    date: "none",
+    dish: "Updating data..."
+    cal: "none"
+    nutritionInfo: "none"
+};
+let lunchMealData = {
+    date: "none",
+    dish: "Updating data..."
+    cal: "none"
+    nutritionInfo: "none"
+};
+let dinnerMealData = {
+    date: "none",
+    dish: "Updating data..."
+    cal: "none"
+    nutritionInfo: "none"
+};
 
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
 
@@ -31,11 +46,21 @@ const fetchMealData = async (mealCode, today) => {
             };
         } else {
             console.error(`[ERROR] No meal data: ${today}`);
-            return { error: "No meal data available for today" };
+            return {
+                date: today,
+                dish: "No meal data available for today"
+                cal: "none"
+                nutritionInfo: "none"
+            };
         }
     } catch (error) {
         console.error(`[ERROR] Failed to get meal data: ${error.message}`);
-        return { error: "Failed to fetch meal data" };
+        return {
+            date: today,
+            dish: "No meal data available for today"
+            cal: "none"
+            nutritionInfo: "none"
+        };
     }
 };
 
