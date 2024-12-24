@@ -10,21 +10,21 @@ const PORT = 3000;
 
 let breakfastMealData = {
     date: "none",
-    dish: "Updating data..."
-    cal: "none"
-    nutritionInfo: "none"
+    dish: "Updating data...",
+    cal: "none",
+    nutritionInfo: "none",
 };
 let lunchMealData = {
     date: "none",
-    dish: "Updating data..."
-    cal: "none"
-    nutritionInfo: "none"
+    dish: "Updating data...",
+    cal: "none",
+    nutritionInfo: "none",
 };
 let dinnerMealData = {
     date: "none",
-    dish: "Updating data..."
-    cal: "none"
-    nutritionInfo: "none"
+    dish: "Updating data...",
+    cal: "none",
+    nutritionInfo: "none",
 };
 
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
@@ -48,18 +48,18 @@ const fetchMealData = async (mealCode, today) => {
             console.error(`[ERROR] No meal data: ${today}`);
             return {
                 date: today,
-                dish: "No meal data available for today"
-                cal: "none"
-                nutritionInfo: "none"
+                dish: "No meal data available for today",
+                cal: "none",
+                nutritionInfo: "none",
             };
         }
     } catch (error) {
         console.error(`[ERROR] Failed to get meal data: ${error.message}`);
         return {
             date: today,
-            dish: "No meal data available for today"
-            cal: "none"
-            nutritionInfo: "none"
+            dish: "No meal data available for today",
+            cal: "none",
+            nutritionInfo: "none",
         };
     }
 };
