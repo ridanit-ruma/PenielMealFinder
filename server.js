@@ -46,6 +46,7 @@ const updateMealData = async () => {
         const data = await response.json();
         if (data.dateTime) {
             const date = new Date(data.dateTime);
+            date.setHours(date.getHours() + 11);
             today = date.toISOString().slice(0, 10).replace(/-/g, '');
         } else {
             console.error(`[ERROR] Faild to load date : no data.datetime`);
