@@ -10,9 +10,10 @@
 	"author": "Your Name",
 	"license": "MIT",
 	"dependencies": {
-		"express": "^4.21.2",
-		"node-fetch": "^3.3.2",
 		"cron": "^3.3.1",
-		"dotenv": "^16.4.7"
+		"dotenv": "^16.4.7",
+		"express": "^4.21.2",
+		"moment-timezone": "^0.5.47",
+		"node-fetch": "^3.3.2"
 	}
 }
