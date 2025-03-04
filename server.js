@@ -56,52 +56,18 @@ const fetchMealData = async (mealCode, today) => {
             };
         } else {
             console.error(`[ERROR] No meal data: ${today}`);
-<<<<<<< HEAD
             return errorJsonOutput(today);
         }
     } catch (error) {
         console.error(`[ERROR] Failed to get meal data: ${error.message}`);
         return errorJsonOutput(today);
-=======
-            return {
-                date: today,
-                dish: "No meal data available for today",
-                cal: "none",
-                nutritionInfo: "none",
-            };
-        }
-    } catch (error) {
-        console.error(`[ERROR] Failed to get meal data: ${error.message}`);
-        return {
-            date: today,
-            dish: "No meal data available for today",
-            cal: "none",
-            nutritionInfo: "none",
-        };
->>>>>>> 689c6afcedc259690079860e5ec723460746cc11
     }
 };
 
 const updateMealData = async () => {
-<<<<<<< HEAD
     let date = moment().tz('Asia/Seoul');
     if (date.hour() >= 13) {
         date = date.add(1, 'days');
-=======
-    let today = '20241223'
-    try {
-        const response = await fetch('https://timeapi.io/api/time/current/zone?timeZone=Asia/Seoul')
-        const data = await response.json();
-        if (data.dateTime) {
-            const date = new Date(data.dateTime);
-            date.setHours(date.getHours() + 11);
-            today = date.toISOString().slice(0, 10).replace(/-/g, '');
-        } else {
-            console.error(`[ERROR] Faild to load date : no data.datetime`);
-        }
-    } catch (error) {
-        console.error(`[ERROR] Faild to load date : ${error.message}`);
->>>>>>> 689c6afcedc259690079860e5ec723460746cc11
     }
     const today = date.format('YYYYMMDD');
     breakfastMealData = await fetchMealData('1', today);
