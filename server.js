@@ -50,6 +50,8 @@ let dinnerMealData = {
 };
 
 console.log(`[INFO] API KEY : ${process.env.KEY}`);
+console.log(`[INFO] ATPT_OFCDC_SC_CODE : ${process.env.ATPT_OFCDC_SC_CODE}`);
+console.log(`[INFO] SD_SCHUL_CODE : ${process.env.SD_SCHUL_CODE}`);
 
 const errorJsonOutput = async (today) => {
     return {
