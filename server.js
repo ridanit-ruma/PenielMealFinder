@@ -3,12 +3,24 @@ import fetch from 'node-fetch';
 import cron from 'cron';
 import dotenv from 'dotenv';
 import moment from 'moment-timezone';
-import SmartApp from '@smartthings/smartapp';
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const smartapp = new SmartApp()
+    .enableEventLogging(2)
+    .page('mainPage', (context, page, configData) => {
+        page
+            .name('SmartApp Authorization Example')
+            .complete(true)
+            .section('my-section', section => {
+                section
+                    .paragraphSetting('my-paragraph')
+                    .text('SmartApp Authorization Example')
+                    .description('An example of how to authorize incoming SmartThings requests to your SmartApp.')
+            })
+    });
+const PORT = 80;
 
 app.use(express.json());
 
@@ -127,17 +139,6 @@ app.get('/meal/getLunchMealData', async (req, res) => {
 app.get('/meal/getDinnerMealData', async (req, res) => {
     res.json(dinnerMealData);
 });
-
-app.post('/meal/webhook', async (req, res) => {
-    console.log('[INFO] Webhook received');
-    console.log(req.body);
-    if (req.body.lifecycle === 'PING') {
-        console.log('[INFO] PING received');
-        return res.json({ challenge: req.body.challenge });
-    }
-
-    res.sendStatus(200);
-})
 
 app.listen(PORT, () => {
     console.log(`[INFO] express api started : http://localhost:${PORT}`);
