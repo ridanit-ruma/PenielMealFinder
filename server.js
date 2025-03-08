@@ -60,7 +60,7 @@ const errorJsonOutput = async (today) => {
     };
 }
 
-const cookMealData = (dishs) => {
+const cookMealData = async (dishs) => {
     return dishs.split('<br/>').map((dish) => {
         return dish.replace(/\(([\d.]+)\)/g, (match, numbers) => {
             const allergyNames = numbers.split('.').map(num => allergyList[num] || num).join(', ');
@@ -80,7 +80,7 @@ const fetchMealData = async (mealCode, today) => {
             const mealData = data.mealServiceDietInfo[1].row[0];
             return {
                 date: today,
-                dish: cookMealData(mealData.DDISH_NM),
+                dish: await cookMealData(mealData.DDISH_NM),
                 cal: mealData.CAL_INFO,
                 nutritionInfo: mealData.NTR_INFO.split('<br/>')
             };
