@@ -3,12 +3,13 @@ import fetch from 'node-fetch';
 import cron from 'cron';
 import dotenv from 'dotenv';
 import moment from 'moment-timezone';
-app.use(express.json());
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
+
+app.use(express.json());
 
 const allergyList = {
     1: "난류",
