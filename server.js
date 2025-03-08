@@ -9,6 +9,27 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
+const allergyList = {
+    1: "난류",
+    2: "우유",
+    3: "메밀",
+    4: "땅콩",
+    5: "대두",
+    6: "밀",
+    7: "고등어",
+    8: "게",
+    9: "새우",
+    10: "돼지고기",
+    11: "복숭아",
+    12: "토마토",
+    13: "아황산류",
+    14: "호두",
+    15: "닭고기",
+    16: "쇠고기",
+    17: "오징어",
+    18: "조개류"
+}
+
 let breakfastMealData = {
     date: "none",
     dish: "Updating data...",
@@ -33,10 +54,19 @@ console.log(`[INFO] API KEY : ${process.env.KEY}`);
 const errorJsonOutput = async (today) => {
     return {
         date: today,
-        dish: "NEIS 서버에 급식 정보가 올라오지 않았거나나",
-        cal: "내부적으로 오류가 생긴것 같아요.",
-        nutritionInfo: "이 메시지를 보신다면 전자의 가능성이 높으니, 기다려주세요."
+        dish: "급식 정보가 없습니다.",
+        cal: "급식 정보가 없습니다.",
+        nutritionInfo: "급식 정보가 없습니다."
     };
+}
+
+const cookMealData = (dishs) => {
+    return dishs.split('<br/>').map((dish) => {
+        return dish.replace(/\(([\d.]+)\)/g, (match, numbers) => {
+            const allergyNames = numbers.split('.').map(num => allergyList[num] || num).join(', ');
+            return `(${allergyNames})`;
+        });
+    });
 }
 
 const fetchMealData = async (mealCode, today) => {
@@ -50,7 +80,7 @@ const fetchMealData = async (mealCode, today) => {
             const mealData = data.mealServiceDietInfo[1].row[0];
             return {
                 date: today,
-                dish: mealData.DDISH_NM.split('<br/>'),
+                dish: cookMealData(mealData.DDISH_NM),
                 cal: mealData.CAL_INFO,
                 nutritionInfo: mealData.NTR_INFO.split('<br/>')
             };
@@ -65,11 +95,12 @@ const fetchMealData = async (mealCode, today) => {
 };
 
 const updateMealData = async () => {
-    let date = moment().tz('Asia/Seoul');
-    if (date.hour() >= 13) {
-        date = date.add(1, 'days');
-    }
-    const today = date.format('YYYYMMDD');
+    // let date = moment().tz('Asia/Seoul');
+    // if (date.hour() >= 13) {
+    //     date = date.add(1, 'days');
+    // }
+    // const today = date.format('YYYYMMDD');
+    const today = '20250307';
     breakfastMealData = await fetchMealData('1', today);
     lunchMealData = await fetchMealData('2', today);
     dinnerMealData = await fetchMealData('3', today);
