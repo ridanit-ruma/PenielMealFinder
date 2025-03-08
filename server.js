@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import cron from 'cron';
 import dotenv from 'dotenv';
 import moment from 'moment-timezone';
+app.use(express.json());
 
 dotenv.config();
 
@@ -124,6 +125,16 @@ app.get('/meal/getLunchMealData', async (req, res) => {
 app.get('/meal/getDinnerMealData', async (req, res) => {
     res.json(dinnerMealData);
 });
+
+app.post('/meal/webhook', async (req, res) => {
+    console.log('[INFO] Webhook received');
+    if (req.body.lifecycle === 'PING') {
+        console.log('[INFO] PING received');
+        return res.json({ challenge: req.body.challenge });
+    }
+
+    res.sendStatus(200);
+})
 
 app.listen(PORT, () => {
     console.log(`[INFO] express api started : http://localhost:${PORT}`);
