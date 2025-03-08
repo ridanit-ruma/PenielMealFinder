@@ -128,7 +128,7 @@ app.get('/meal/getDinnerMealData', async (req, res) => {
     res.json(dinnerMealData);
 });
 
-app.post('/meal/webhook', async (req, res) => {
+app.all('/meal/webhook', async (req, res) => {
     console.log('[INFO] Webhook received');
     console.log(req.body);
     res.sendStatus(200);
