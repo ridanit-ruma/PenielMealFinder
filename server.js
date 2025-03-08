@@ -3,6 +3,7 @@ import fetch from 'node-fetch';
 import cron from 'cron';
 import dotenv from 'dotenv';
 import moment from 'moment-timezone';
+import SmartApp from '@smartthings/smartapp';
 
 dotenv.config();
 
@@ -130,11 +131,6 @@ app.get('/meal/getDinnerMealData', async (req, res) => {
 app.post('/meal/webhook', async (req, res) => {
     console.log('[INFO] Webhook received');
     console.log(req.body);
-    if (req.body.lifecycle === 'PING') {
-        console.log('[INFO] PING received');
-        return res.json({ challenge: req.body.challenge });
-    }
-
     res.sendStatus(200);
 })
 
