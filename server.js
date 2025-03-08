@@ -127,10 +127,11 @@ app.get('/meal/getDinnerMealData', async (req, res) => {
     res.json(dinnerMealData);
 });
 
-app.post('/', async (req, res) => {
+app.post('/meal/webhook', async (req, res) => {
     console.log('[INFO] Webhook received');
     if (req.body.lifecycle === 'PING') {
         console.log('[INFO] PING received');
+        console.log(req.body);
         return res.json({ challenge: req.body.challenge });
     }
 
