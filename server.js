@@ -95,11 +95,12 @@ const fetchMealData = async (mealCode, today) => {
 };
 
 const updateMealData = async () => {
-    let date = moment().tz('Asia/Seoul');
-    if (date.hour() >= 13) {
-        date = date.add(1, 'days');
-    }
-    const today = date.format('YYYYMMDD');
+    // let date = moment().tz('Asia/Seoul');
+    // if (date.hour() >= 13) {
+    //     date = date.add(1, 'days');
+    // }
+    // const today = date.format('YYYYMMDD');
+    const today = '20250307';
     breakfastMealData = await fetchMealData('1', today);
     lunchMealData = await fetchMealData('2', today);
     dinnerMealData = await fetchMealData('3', today);
