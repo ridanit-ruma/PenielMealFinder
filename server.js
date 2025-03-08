@@ -61,11 +61,12 @@ const errorJsonOutput = async (today) => {
 }
 
 const cookMealData = async (dishs) => {
-    return dishs.split('<br/>').map((dish) => {
-        return dish.replace(/\(([\d.]+)\)/g, (match, numbers) => {
+    return dishs.split('<br/>').map((dish, i) => {
+        const cookedDish = dish.replace(/\(([\d.]+)\)/g, (match, numbers) => {
             const allergyNames = numbers.split('.').map(num => allergyList[num] || num).join(', ');
             return `(${allergyNames})`;
         });
+        return `${i + 1}. ${cookedDish}`;
     });
 }
 
