@@ -71,7 +71,7 @@ const cookMealData = async (dishs) => {
 }
 
 const fetchMealData = async (mealCode, today) => {
-    const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.KEY}&Type=json&ATPT_OFCDC_SC_CODE=C10&SD_SCHUL_CODE=7191199&MMEAL_SC_CODE=${mealCode}&MLSV_YMD=${today}`;
+    const apiUrl = `https://open.neis.go.kr/hub/mealServiceDietInfo?KEY=${process.env.KEY}&Type=json&ATPT_OFCDC_SC_CODE=${process.env.ATPT_OFCDC_SC_CODE}&SD_SCHUL_CODE=${process.env.SD_SCHUL_CODE}&MMEAL_SC_CODE=${mealCode}&MLSV_YMD=${today}`;
     
     try {
         const response = await fetch(apiUrl);
@@ -96,11 +96,12 @@ const fetchMealData = async (mealCode, today) => {
 };
 
 const updateMealData = async () => {
-    let date = moment().tz('Asia/Seoul');
-    if (date.hour() >= 13) {
-        date = date.add(1, 'days');
-    }
-    const today = date.format('YYYYMMDD');
+    // let date = moment().tz('Asia/Seoul');
+    // if (date.hour() >= 13) {
+    //     date = date.add(1, 'days');
+    // }
+    // const today = date.format('YYYYMMDD');
+    const today = '20250307'
     breakfastMealData = await fetchMealData('1', today);
     lunchMealData = await fetchMealData('2', today);
     dinnerMealData = await fetchMealData('3', today);
